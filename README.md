@@ -25,7 +25,7 @@ Provided by `Tensor Programming` - [YoutubeLink](https://www.youtube.com/playlis
 
 ## Architecture
 
-![Architecture Diagram](./images/UrlShortner.png)
+![Architecture Diagram](./images/UrlShortener.png)
 
 - Service : URL Shortner Domain Logic
 - Serializer
