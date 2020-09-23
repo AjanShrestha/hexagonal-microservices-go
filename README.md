@@ -22,3 +22,31 @@ Provided by `Tensor Programming` - [YoutubeLink](https://www.youtube.com/playlis
   - If framework is used, it is used via ports and adapters
 - App & Domain Logic are testable without any of the port and adapter
 - Business logic is independent of external IO or agency. It only knows about its own domain only.
+
+## Architecture
+
+![Architecture Diagram](./images/UrlShortner.png)
+
+- Service : URL Shortner Domain Logic
+- Serializer
+  - JSON
+  - MsgPack
+- External API
+  - REST API
+- Repository
+  - MongoDB
+  - Redis
+
+## Example
+
+- User supplies URL to shorten
+
+  ```pre
+  https://www.google.com -> 929a8-37q
+  ```
+
+- On sending the shortened url to our host
+
+  ```pre
+  http://localhost:8000/929a8-37q -> https://www.google.com
+  ```
