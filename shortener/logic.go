@@ -29,6 +29,9 @@ func NewRedirectService(redirectRepo RedirectRepository) RedirectService {
 }
 
 // Find returns the Redirect from the code
+//
+// Here, the repository is isolated from the service. We get the
+// data from any repository as long as we get the data
 func (r *redirectService) Find(code string) (*Redirect, error) {
 	return r.redirectRepo.Find(code)
 }
@@ -40,6 +43,9 @@ func (r *redirectService) Find(code string) (*Redirect, error) {
 // - Generate the code and created at time stamp
 //
 // - Store it and return the error if any
+//
+// Here, the repository is isolated from the service. We get the
+// data in any repository as long as it is stored
 func (r *redirectService) Store(redirect *Redirect) error {
 	if err := validate.Validate(redirect); err != nil {
 		return errs.Wrap(ErrRedirectInvalid, "service.Redirect.Store")
