@@ -50,3 +50,12 @@ Provided by `Tensor Programming` - [YoutubeLink](https://www.youtube.com/playlis
   ```pre
   http://localhost:8000/929a8-37q -> https://www.google.com
   ```
+
+## General Flow
+
+```pre
+repo  <- service  -> serializer  -> http
+```
+
+- service connects to a repository via port
+- service has a serializer adapter via http transport - JSON & MsgPack
