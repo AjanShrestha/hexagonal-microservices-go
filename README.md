@@ -157,3 +157,12 @@ repo  <- service  -> serializer  -> http
    ```pre
    GET http://localhost:8080/Dn2mcnFGg
    ```
+
+### MsgPack
+
+1. Run the code
+
+   ```sh
+   cd tool
+   go run msgpack.go
+   ```
