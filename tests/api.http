@@ -1,0 +1,13 @@
+###
+POST http://localhost:8080
+Content-Type: application/json
+
+{
+  "url": "https://github.com/AjanShrestha?tab=repositories"
+}
+
+###
+GET http://localhost:8080/qtO0FnFGR
+
+###
+GET http://localhost:8080/Dn2mcnFGg
