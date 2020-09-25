@@ -74,6 +74,7 @@ repo  <- service  -> serializer  -> http
 2. Run the application
 
    ```sh
+   docker run -p 6379:6379 --name redis -d redis
    go run main.go
    ```
 
@@ -106,4 +107,53 @@ repo  <- service  -> serializer  -> http
 
    ```pre
    GET http://localhost:8080/qtO0FnFGR
+   ```
+
+### MongoDB
+
+1. Setup the environment
+
+   ```bash
+   MONGO_URL=mongodb://localhost/shortener
+   MONGO_TIMEOUT=30
+   MONGO_DB=shortener
+   URL_DB=mongo
+   ```
+
+2. Run the application
+
+   ```sh
+   docker run --name mongo -p 27017:27017 -d mongo:latest
+   go run main.go
+   ```
+
+3. Send Post Request
+
+   ```pre
+   POST http://localhost:8080
+   Content-Type: application/json
+
+   {
+     "url": "https://github.com/AjanShrestha?tab=repositories"
+   }
+   ```
+
+   ```pre
+   HTTP/1.1 201 Created
+   Content-Type: application/json
+   Date: Fri, 25 Sep 2020 12:19:15 GMT
+   Content-Length: 101
+   Connection: close
+
+    {
+      "code": "Dn2mcnFGg",
+      "url": "https://github.com/AjanShrestha?tab=repositories",
+      "created_at": 1601036948
+    }
+   ```
+
+4. Send Get Request
+
+   ```pre
+   GET http://localhost:8080/Dn2mcnFGg
    ```
