@@ -59,3 +59,51 @@ repo  <- service  -> serializer  -> http
 
 - service connects to a repository via port
 - service has a serializer adapter via http transport - JSON & MsgPack
+
+## Run the code
+
+### Redis
+
+1. Setup the environment
+
+   ```bash
+   URL_DB=redis
+   REDIS_URL=redis://localhost:6379
+   ```
+
+2. Run the application
+
+   ```sh
+   go run main.go
+   ```
+
+3. Send Post Request
+
+   ```pre
+   POST http://localhost:8080
+   Content-Type: application/json
+
+   {
+     "url": "https://github.com/AjanShrestha?tab=repositories"
+   }
+   ```
+
+   ```pre
+   HTTP/1.1 201 Created
+   Content-Type: application/json
+   Date: Fri, 25 Sep 2020 12:19:15 GMT
+   Content-Length: 101
+   Connection: close
+
+    {
+      "code": "qtO0FnFGR",
+      "url": "https://github.com/AjanShrestha?tab=repositories",
+      "created_at": 1601036355
+    }
+   ```
+
+4. Send Get Request
+
+   ```pre
+   GET http://localhost:8080/qtO0FnFGR
+   ```
