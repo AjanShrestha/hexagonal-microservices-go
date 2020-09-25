@@ -1,6 +1,7 @@
 package api
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -61,5 +62,30 @@ func (h *handler) Get(w http.ResponseWriter, r *http.Request) {
 
 // Post stores the code to be used for redirect
 func (h *handler) Post(w http.ResponseWriter, r *http.Request) {
-
+	contentType := r.Header.Get("Content-Type")
+	requestBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	redirect, err := h.serializer(contentType).Decode(requestBody)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	err = h.redirectService.Store(redirect)
+	if err != nil {
+		if errors.Cause(err) == shortener.ErrRedirectNotFound {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
+		}
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	responseBody, err := h.serializer(contentType).Encode(redirect)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	setupResponse(w, contentType, responseBody, http.StatusCreated)
 }
