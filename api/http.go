@@ -7,6 +7,8 @@ import (
 	js "github.com/AjanShrestha/hexagonal-microservices-go/serializer/json"
 	ms "github.com/AjanShrestha/hexagonal-microservices-go/serializer/msgpack"
 	"github.com/AjanShrestha/hexagonal-microservices-go/shortener"
+	"github.com/go-chi/chi"
+	"github.com/pkg/errors"
 )
 
 // RedirectHandler interface defines the methods for http layer
@@ -45,6 +47,16 @@ func (h *handler) serializer(contentType string) shortener.RedirectSerializer {
 
 // Get redirects to the url that is stored in the database
 func (h *handler) Get(w http.ResponseWriter, r *http.Request) {
+	code := chi.URLParam(r, "code")
+	redirect, err := h.redirectService.Find(code)
+	if err != nil {
+		if errors.Cause(err) == shortener.ErrRedirectNotFound {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+	}
+	http.Redirect(w, r, redirect.URL, http.StatusMovedPermanently)
 }
 
 // Post stores the code to be used for redirect
